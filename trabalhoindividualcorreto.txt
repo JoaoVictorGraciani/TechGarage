@@ -1,0 +1,188 @@
+------------------------------------------------------------------
+👨‍💼 João — Product Owner (PO) + Documentação
+
+Responsabilidades
+Definir a visão do produto.
+Priorizar o Product Backlog.
+Escrever as User Stories.
+Definir critérios de aceite.
+Validar as entregas da Sprint.
+Elaborar toda a documentação do projeto.
+Preparar a apresentação da visão de negócio.
+Entregáveis
+Documento de requisitos.
+Product Backlog.
+README.md.
+Relatório técnico.
+Apresentação da visão do produto.
+
+
+------------------------------------------------------------------
+👩‍💼 Dani — Scrum Master + Métricas Ágeis
+
+Responsabilidades
+Organizar Sprint Planning.
+Conduzir Daily Scrum.
+Conduzir Sprint Review.
+Conduzir Retrospectiva.
+Proteger o escopo da Sprint.
+Gerenciar o Kanban.
+Acompanhar métricas ágeis.
+Entregáveis
+Quadro Scrum.
+Quadro Kanban.
+Burndown Chart.
+Lead Time.
+Cycle Time.
+Controle de WIP.
+Relatório das cerimônias.
+
+
+------------------------------------------------------------------
+👨‍💻 Wazny — Desenvolvedor Front-end
+
+Responsabilidades
+Criar toda a interface React.
+Desenvolver componentes reutilizáveis.
+Consumir a API REST.
+Garantir responsividade.
+Aplicar identidade visual da TechGarage Store.
+Telas
+Home
+Produtos
+Produto
+Carrinho
+Checkout
+Login
+Cadastro
+Perfil
+Pedidos
+Página 404
+Componentes
+Navbar
+Footer
+Banner
+Card de Produto
+Barra de Pesquisa
+Filtros
+Carrinho Lateral
+Modal
+Botões
+Loading
+Toasts
+
+
+------------------------------------------------------------------
+👨‍💻 Matheus — Desenvolvedor Back-end + MySQL
+
+Responsabilidades
+Criar toda a API.
+Implementar as regras de negócio.
+Modelar o banco de dados.
+Integrar com o Front-end.
+Banco MySQL
+Prisma ORM
+API
+Produtos
+Categorias
+Usuários
+Login
+Carrinho
+Pedidos
+Checkout PIX
+Estoque
+Funcionalidades
+CRUD Produtos
+CRUD Categorias
+CRUD Usuários
+Login JWT
+Carrinho
+Pedido
+Controle de Estoque
+Simulação PIX
+
+
+------------------------------------------------------------------
+Organização da Sprint 1
+
+Responsável	Atividade
+João	Criar Product Backlog
+João	Definir User Stories
+João	Documentação inicial
+
+Dani	Sprint Planning
+Dani	Criar Kanban
+Dani	Criar Burndown
+
+Wazny	Criar projeto React
+Wazny	Desenvolver Home
+Wazny	Criar Navbar
+Wazny	Criar Catálogo
+
+Matheus	Criar projeto Node.js
+Matheus	Configurar Express
+Matheus	Configurar MySQL
+Matheus	Configurar Prisma
+
+
+-------------------------------------------------------------------
+Organização da Sprint 2
+
+Responsável	Atividade
+João	Validar funcionalidades
+
+Dani	Daily + Review
+
+Wazny	Carrinho
+Wazny	Checkout
+
+Matheus	API Carrinho
+Matheus	API Checkout
+Matheus	API PIX
+Matheus	Controle de Estoque
+
+------------------------------------------------------------------
+Organização da Sprint 3
+Responsável	Atividade
+João	Finalizar documentação
+
+Dani	Métricas finais
+
+Wazny	Ajustes visuais
+
+Matheus	Correção de bugs
+
+Todos	Testes integrados
+Todos	Apresentação
+
+
+------------------------------------------------------------------
+Fluxo de Trabalho da Equipe
+João (Product Owner)
+        │
+        ▼
+Product Backlog
+        │
+        ▼
+Dani (Scrum Master)
+        │
+        ▼
+Sprint Planning
+        │
+        ▼
+┌────────────────────────────┐
+│ Wazny → Front-end          │
+│ Matheus → Back-end + MySQL │
+└────────────────────────────┘
+        │
+        ▼
+Integração Front + Back
+        │
+        ▼
+Testes
+        │
+        ▼
+Review
+        │
+        ▼
+Entrega da Sprint
