@@ -1,0 +1,46 @@
+{
+  "produtos": [
+    {
+      "id": 1,
+      "nome": "Notebook Gamer",
+      "preco": 5999.90,
+      "categoria": "Notebook",
+      "imagem": "https://picsum.photos/400?1"
+    },
+    {
+      "id": 2,
+      "nome": "Mouse Gamer",
+      "preco": 199.90,
+      "categoria": "Periféricos",
+      "imagem": "https://picsum.photos/400?2"
+    },
+    {
+      "id": 3,
+      "nome": "Teclado Mecânico",
+      "preco": 399.90,
+      "categoria": "Periféricos",
+      "imagem": "https://picsum.photos/400?3"
+    },
+    {
+      "id": 4,
+      "nome": "Monitor LG 27",
+      "preco": 1499.90,
+      "categoria": "Monitores",
+      "imagem": "https://picsum.photos/400?4"
+    },
+    {
+      "id": 5,
+      "nome": "Headset HyperX",
+      "preco": 499.90,
+      "categoria": "Áudio",
+      "imagem": "https://picsum.photos/400?5"
+    },
+    {
+      "id": 6,
+      "nome": "SSD Kingston 1TB",
+      "preco": 599.90,
+      "categoria": "Armazenamento",
+      "imagem": "https://picsum.photos/400?6"
+    }
+  ]
+}
