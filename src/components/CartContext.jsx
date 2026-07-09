@@ -1,4 +1,3 @@
-// src/context/CartContext.jsx
 import { createContext, useContext, useState } from 'react';
 
 const CartContext = createContext();
@@ -18,36 +17,16 @@ export function CartProvider({ children }) {
     });
   };
 
-  const removerItem = (produtoId) => {
-    setCarrinho((prev) => prev.filter((item) => item.id !== produtoId));
-  };
-
-  const alterarQuantidade = (produtoId, novaQuantidade) => {
-    if (novaQuantidade <= 0) {
-      removerItem(produtoId);
-      return;
-    }
-    setCarrinho((prev) =>
-      prev.map((item) =>
-        item.id === produtoId ? { ...item, quantidade: novaQuantidade } : item
-      )
-    );
-  };
-
   const totalItens = carrinho.reduce((soma, item) => soma + item.quantidade, 0);
-  const totalPreco = carrinho.reduce((soma, item) => soma + item.preco * item.quantidade, 0);
 
   return (
-    <CartContext.Provider
-      value={{
-        carrinho,
+    <CartContext.Provider value={{ carrinho,
+        setCarrinho,       
         adicionarItem,
         removerItem,
         alterarQuantidade,
         totalItens,
-        totalPreco,
-      }}
-    >
+        totalPreco, }}>
       {children}
     </CartContext.Provider>
   );
