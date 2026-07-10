@@ -25,10 +25,10 @@ function Checkout() {
   if (carrinho.length === 0 && !pagamentoConfirmado) {
     return (
       <div className="max-w-md mx-auto p-6 text-center py-20">
-        <p className="text-zinc-400 mb-4">Seu carrinho está vazio.</p>
+        <p className="text-[var(--color-text-secondary)] mb-4">Seu carrinho está vazio.</p>
         <Link
           to="/"
-          className="inline-block bg-lime-400 text-zinc-950 font-semibold px-5 py-2 rounded-lg hover:bg-lime-300 transition-colors"
+          className="inline-block bg-[var(--color-accent)] text-[var(--color-accent-contrast)] font-semibold px-5 py-2 rounded-[var(--radius-sm)] transition-all duration-200 hover:bg-[var(--color-accent-hover)] active:scale-95"
         >
           Continuar comprando
         </Link>
@@ -49,13 +49,13 @@ function Checkout() {
 
   if (pagamentoConfirmado) {
     return (
-      <div className="max-w-md mx-auto p-6 text-center py-20">
-        <div className="text-5xl mb-4">✅</div>
-        <h1 className="text-xl font-bold text-white mb-2">Pagamento confirmado!</h1>
-        <p className="text-zinc-400 mb-6">Seu pedido foi realizado com sucesso.</p>
+      <div className="max-w-md mx-auto p-6 text-center py-20 animate-[fadeInUp_0.4s_ease]">
+        <div className="text-5xl mb-4 animate-[popIn_0.4s_ease]">✅</div>
+        <h1 className="text-xl font-bold text-[var(--color-text-primary)] mb-2">Pagamento confirmado!</h1>
+        <p className="text-[var(--color-text-secondary)] mb-6">Seu pedido foi realizado com sucesso.</p>
         <Link
           to="/"
-          className="inline-block bg-lime-400 text-zinc-950 font-semibold px-5 py-2 rounded-lg hover:bg-lime-300 transition-colors"
+          className="inline-block bg-[var(--color-accent)] text-[var(--color-accent-contrast)] font-semibold px-5 py-2 rounded-[var(--radius-sm)] transition-all duration-200 hover:bg-[var(--color-accent-hover)] active:scale-95"
         >
           Voltar à loja
         </Link>
@@ -65,18 +65,18 @@ function Checkout() {
 
   return (
     <div className="max-w-md mx-auto p-4 md:p-6">
-      <h1 className="text-xl font-bold text-white mb-6">Checkout</h1>
+      <h1 className="text-xl font-bold text-[var(--color-text-primary)] mb-6">Checkout</h1>
 
       {/* Resumo dos valores */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 mb-6">
-        <h2 className="text-sm text-zinc-400 mb-3">Resumo do pedido</h2>
+      <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[var(--radius-md)] p-4 mb-6">
+        <h2 className="text-sm text-[var(--color-text-secondary)] mb-3">Resumo do pedido</h2>
         <div className="flex flex-col gap-2 mb-3">
           {carrinho.map((item) => (
             <div key={item.id} className="flex justify-between text-sm">
-              <span className="text-zinc-300 truncate pr-2">
-                {item.nome} <span className="text-zinc-500">x{item.quantidade}</span>
+              <span className="text-[var(--color-text-secondary)] truncate pr-2">
+                {item.nome} <span className="text-[var(--color-text-muted)]">x{item.quantidade}</span>
               </span>
-              <span className="text-zinc-300 shrink-0">
+              <span className="text-[var(--color-text-secondary)] shrink-0">
                 {(item.preco * item.quantidade).toLocaleString('pt-BR', {
                   style: 'currency',
                   currency: 'BRL',
@@ -85,9 +85,9 @@ function Checkout() {
             </div>
           ))}
         </div>
-        <div className="border-t border-zinc-800 pt-3 flex justify-between items-center">
-          <span className="text-zinc-300 font-medium">Total</span>
-          <span className="text-lime-400 text-xl font-bold">
+        <div className="border-t border-[var(--color-border)] pt-3 flex justify-between items-center">
+          <span className="text-[var(--color-text-primary)] font-medium">Total</span>
+          <span className="text-[var(--color-accent)] text-xl font-bold">
             {totalPreco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
           </span>
         </div>
@@ -97,32 +97,36 @@ function Checkout() {
       {!pixGerado ? (
         <button
           onClick={() => setPixGerado(true)}
-          className="w-full bg-lime-400 text-zinc-950 font-semibold py-3 rounded-lg hover:bg-lime-300 transition-colors"
+          className="w-full bg-[var(--color-accent)] text-[var(--color-accent-contrast)] font-semibold py-3 rounded-[var(--radius-sm)] transition-all duration-200 hover:bg-[var(--color-accent-hover)] active:scale-95"
         >
           Pagar com PIX
         </button>
       ) : (
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex flex-col items-center gap-4">
-          <h2 className="text-sm text-zinc-400 self-start">Escaneie o QR Code</h2>
+        <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[var(--radius-md)] p-4 flex flex-col items-center gap-4 animate-[fadeInUp_0.4s_ease]">
+          <h2 className="text-sm text-[var(--color-text-secondary)] self-start">Escaneie o QR Code</h2>
 
           {/* QR Code fake, gerado via API pública de placeholder */}
           <img
             src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&bgcolor=18181b&color=a3e635&data=${encodeURIComponent(codigoPix)}`}
             alt="QR Code PIX"
-            className="w-48 h-48 rounded-lg border border-zinc-800"
+            className="w-48 h-48 rounded-[var(--radius-md)] border border-[var(--color-border)]"
           />
 
           <div className="w-full">
-            <span className="text-xs text-zinc-500 block mb-1">PIX Copia e Cola</span>
+            <span className="text-xs text-[var(--color-text-muted)] block mb-1">PIX Copia e Cola</span>
             <div className="flex items-center gap-2">
               <input
                 readOnly
                 value={codigoPix}
-                className="flex-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-zinc-300 truncate"
+                className="flex-1 bg-[var(--color-surface-hover)] border border-[var(--color-border-hover)] rounded-[var(--radius-sm)] px-3 py-2 text-xs text-[var(--color-text-secondary)] truncate"
               />
               <button
                 onClick={copiarCodigo}
-                className="shrink-0 bg-zinc-800 border border-zinc-700 text-zinc-200 text-xs font-medium px-3 py-2 rounded-lg hover:border-lime-400 transition-colors"
+                className={`shrink-0 border rounded-[var(--radius-sm)] text-xs font-medium px-3 py-2 transition-all duration-200 active:scale-95 ${
+                  copiado
+                    ? 'bg-[var(--color-accent)]/10 border-[var(--color-accent)] text-[var(--color-accent)]'
+                    : 'bg-[var(--color-surface-hover)] border-[var(--color-border-hover)] text-[var(--color-text-primary)] hover:border-[var(--color-accent)]'
+                }`}
               >
                 {copiado ? 'Copiado!' : 'Copiar'}
               </button>
@@ -132,7 +136,7 @@ function Checkout() {
           {/* Botão de simulação — em produção, isso viria de um webhook do banco */}
           <button
             onClick={confirmarPagamento}
-            className="w-full bg-lime-400 text-zinc-950 font-semibold py-3 rounded-lg hover:bg-lime-300 transition-colors mt-2"
+            className="w-full bg-[var(--color-accent)] text-[var(--color-accent-contrast)] font-semibold py-3 rounded-[var(--radius-sm)] transition-all duration-200 hover:bg-[var(--color-accent-hover)] active:scale-95 mt-2"
           >
             Simular pagamento aprovado
           </button>

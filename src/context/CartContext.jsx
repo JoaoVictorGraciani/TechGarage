@@ -1,10 +1,26 @@
 // src/context/CartContext.jsx
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 
 const CartContext = createContext();
 
+const CHAVE_STORAGE = 'techgarage:carrinho';
+
+function carregarCarrinhoInicial() {
+  try {
+    const dados = localStorage.getItem(CHAVE_STORAGE);
+    return dados ? JSON.parse(dados) : [];
+  } catch {
+    return [];
+  }
+}
+
 export function CartProvider({ children }) {
-  const [carrinho, setCarrinho] = useState([]);
+  const [carrinho, setCarrinho] = useState(carregarCarrinhoInicial);
+
+  // Sempre que o carrinho mudar, salva no localStorage
+  useEffect(() => {
+    localStorage.setItem(CHAVE_STORAGE, JSON.stringify(carrinho));
+  }, [carrinho]);
 
   const adicionarItem = (produto) => {
     setCarrinho((prev) => {
@@ -41,6 +57,7 @@ export function CartProvider({ children }) {
     <CartContext.Provider
       value={{
         carrinho,
+        setCarrinho,
         adicionarItem,
         removerItem,
         alterarQuantidade,
