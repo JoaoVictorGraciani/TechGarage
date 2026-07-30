@@ -30,19 +30,18 @@ function Carrinho() {
             className="flex items-center gap-4 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[var(--radius-md)] p-3 transition-colors duration-200 hover:border-[var(--color-border-hover)]"
           >
             <img
-              src={item.imagem}
-              alt={item.nome}
+              src={item.image}
+              alt={item.name}
               className="w-16 h-16 object-cover rounded-[var(--radius-sm)] bg-[var(--color-surface-hover)]"
             />
 
             <div className="flex-1 min-w-0">
-              <h3 className="text-sm text-[var(--color-text-primary)] font-medium truncate">{item.nome}</h3>
+              <h3 className="text-sm text-[var(--color-text-primary)] font-medium truncate">{item.name}</h3>
               <p className="text-[var(--color-accent)] text-sm font-bold">
-                {item.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                {Number(item.price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
               </p>
             </div>
 
-            {/* Controle de quantidade */}
             <div className="flex items-center gap-2">
               <button
                 onClick={() => alterarQuantidade(item.id, item.quantidade - 1)}
@@ -59,9 +58,8 @@ function Carrinho() {
               </button>
             </div>
 
-            {/* Subtotal do item */}
             <span className="text-sm text-[var(--color-text-secondary)] w-20 text-right hidden sm:block">
-              {(item.preco * item.quantidade).toLocaleString('pt-BR', {
+              {(Number(item.price) * item.quantidade).toLocaleString('pt-BR', {
                 style: 'currency',
                 currency: 'BRL',
               })}
@@ -78,7 +76,6 @@ function Carrinho() {
         ))}
       </div>
 
-      {/* Resumo / total */}
       <div className="mt-6 bg-[var(--color-surface)] border border-[var(--color-accent)]/30 rounded-[var(--radius-md)] p-4 flex items-center justify-between">
         <span className="text-[var(--color-text-secondary)]">Total</span>
         <span className="text-[var(--color-accent)] text-xl font-bold">

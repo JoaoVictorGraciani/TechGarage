@@ -12,8 +12,8 @@ export function useProdutos() {
       try {
         setLoading(true);
         const [resProdutos, resCategorias] = await Promise.all([
-          api.get('/produtos'),
-          api.get('/categorias'),
+          api.get('/products'),
+          api.get('/categories'),
         ]);
         setProdutos(resProdutos.data);
         setCategorias(resCategorias.data);

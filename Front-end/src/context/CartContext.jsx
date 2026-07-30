@@ -1,8 +1,6 @@
-// src/context/CartContext.jsx
 import { createContext, useContext, useState, useEffect } from 'react';
 
 const CartContext = createContext();
-
 const CHAVE_STORAGE = 'techgarage:carrinho';
 
 function carregarCarrinhoInicial() {
@@ -17,7 +15,6 @@ function carregarCarrinhoInicial() {
 export function CartProvider({ children }) {
   const [carrinho, setCarrinho] = useState(carregarCarrinhoInicial);
 
-  // Sempre que o carrinho mudar, salva no localStorage
   useEffect(() => {
     localStorage.setItem(CHAVE_STORAGE, JSON.stringify(carrinho));
   }, [carrinho]);
@@ -51,19 +48,11 @@ export function CartProvider({ children }) {
   };
 
   const totalItens = carrinho.reduce((soma, item) => soma + item.quantidade, 0);
-  const totalPreco = carrinho.reduce((soma, item) => soma + item.preco * item.quantidade, 0);
+  const totalPreco = carrinho.reduce((soma, item) => soma + Number(item.price) * item.quantidade, 0);
 
   return (
     <CartContext.Provider
-      value={{
-        carrinho,
-        setCarrinho,
-        adicionarItem,
-        removerItem,
-        alterarQuantidade,
-        totalItens,
-        totalPreco,
-      }}
+      value={{ carrinho, setCarrinho, adicionarItem, removerItem, alterarQuantidade, totalItens, totalPreco }}
     >
       {children}
     </CartContext.Provider>

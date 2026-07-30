@@ -4,7 +4,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 
 function gerarCodigoPix() {
-  // Simulação de um código "copia e cola" PIX
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   let codigo = '00020126580014BR.GOV.BCB.PIX';
   for (let i = 0; i < 40; i++) {
@@ -67,17 +66,16 @@ function Checkout() {
     <div className="max-w-md mx-auto p-4 md:p-6">
       <h1 className="text-xl font-bold text-[var(--color-text-primary)] mb-6">Checkout</h1>
 
-      {/* Resumo dos valores */}
       <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[var(--radius-md)] p-4 mb-6">
         <h2 className="text-sm text-[var(--color-text-secondary)] mb-3">Resumo do pedido</h2>
         <div className="flex flex-col gap-2 mb-3">
           {carrinho.map((item) => (
             <div key={item.id} className="flex justify-between text-sm">
               <span className="text-[var(--color-text-secondary)] truncate pr-2">
-                {item.nome} <span className="text-[var(--color-text-muted)]">x{item.quantidade}</span>
+                {item.name} <span className="text-[var(--color-text-muted)]">x{item.quantidade}</span>
               </span>
               <span className="text-[var(--color-text-secondary)] shrink-0">
-                {(item.preco * item.quantidade).toLocaleString('pt-BR', {
+                {(Number(item.price) * item.quantidade).toLocaleString('pt-BR', {
                   style: 'currency',
                   currency: 'BRL',
                 })}
@@ -93,7 +91,6 @@ function Checkout() {
         </div>
       </div>
 
-      {/* Pagamento PIX */}
       {!pixGerado ? (
         <button
           onClick={() => setPixGerado(true)}
@@ -105,7 +102,6 @@ function Checkout() {
         <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[var(--radius-md)] p-4 flex flex-col items-center gap-4 animate-[fadeInUp_0.4s_ease]">
           <h2 className="text-sm text-[var(--color-text-secondary)] self-start">Escaneie o QR Code</h2>
 
-          {/* QR Code fake, gerado via API pública de placeholder */}
           <img
             src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&bgcolor=18181b&color=a3e635&data=${encodeURIComponent(codigoPix)}`}
             alt="QR Code PIX"
@@ -133,7 +129,6 @@ function Checkout() {
             </div>
           </div>
 
-          {/* Botão de simulação — em produção, isso viria de um webhook do banco */}
           <button
             onClick={confirmarPagamento}
             className="w-full bg-[var(--color-accent)] text-[var(--color-accent-contrast)] font-semibold py-3 rounded-[var(--radius-sm)] transition-all duration-200 hover:bg-[var(--color-accent-hover)] active:scale-95 mt-2"

@@ -1,45 +1,42 @@
 import { useCart } from '../context/CartContext';
 
-function ProductCard({ produto, nomeCategoria }) {
+function ProductCard({ produto }) {
   const { adicionarItem } = useCart();
 
-  const semEstoque = produto.estoque === 0;
+  const semEstoque = produto.stock === 0;
 
   return (
     <div className="group bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[var(--radius-md)] overflow-hidden flex flex-col transition-all duration-300 hover:border-[var(--color-accent)]/50 hover:-translate-y-1 hover:shadow-lg hover:shadow-black/30">
-      {/* Imagem */}
       <div className="relative aspect-square bg-[var(--color-surface-hover)] overflow-hidden">
         <img
-          src={produto.imagem}
-          alt={produto.nome}
+          src={produto.image}
+          alt={produto.name}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        {/* Badge de estoque */}
         <span
           className={`absolute top-2 left-2 text-[10px] font-semibold px-2 py-1 rounded-[var(--radius-full)] ${
             semEstoque
               ? 'bg-[var(--color-danger)]/90 text-white'
-              : produto.estoque <= 3
+              : produto.stock <= 3
               ? 'bg-[var(--color-warning)]/90 text-[var(--color-accent-contrast)]'
               : 'bg-[var(--color-accent)]/90 text-[var(--color-accent-contrast)]'
           }`}
         >
-          {semEstoque ? 'Sem estoque' : produto.estoque <= 3 ? `Últimas ${produto.estoque}` : 'Em estoque'}
+          {semEstoque ? 'Sem estoque' : produto.stock <= 3 ? `Últimas ${produto.stock}` : 'Em estoque'}
         </span>
       </div>
 
-      {/* Conteúdo */}
       <div className="flex flex-col gap-1 p-[var(--space-sm)] flex-1">
         <span className="text-[10px] uppercase text-[var(--color-text-muted)] tracking-wide">
-          {nomeCategoria}
+          {produto.category?.name || 'Outros'}
         </span>
         <h3 className="text-sm font-medium text-[var(--color-text-primary)] line-clamp-2">
-          {produto.nome}
+          {produto.name}
         </h3>
 
         <div className="mt-auto pt-2 flex items-center justify-between">
           <span className="text-[var(--color-accent)] font-bold text-base">
-            {produto.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+            {Number(produto.price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
           </span>
         </div>
 
