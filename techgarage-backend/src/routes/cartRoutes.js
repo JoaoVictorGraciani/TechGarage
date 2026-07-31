@@ -1,8 +1,7 @@
 const express = require('express');
-const { PrismaClient } = require('@prisma/client');
+const prisma = require('../config/prisma');
 
 const router = express.Router();
-const prisma = new PrismaClient();
 
 // 1. Adicionar item ao carrinho (ou aumentar quantidade se já existir)
 router.post('/add', async (req, res) => {
@@ -34,8 +33,12 @@ router.post('/add', async (req, res) => {
 
     res.status(201).json(newItem);
   } catch (error) {
-    res.status(500).json({ error: "Erro ao adicionar item ao carrinho." });
-  }
+  console.log(error);
+
+  res.status(500).json({ 
+    error: error.message 
+  });
+    }
 });
 
 // 2. Listar todos os itens do carrinho de um usuário específico
