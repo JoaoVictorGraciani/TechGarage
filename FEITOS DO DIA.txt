@@ -1,0 +1,17 @@
+OK| Banco MySQL criado
+OK| Prisma 6 conectado
+OK| Servidor Express rodando
+OK| User funcionando
+OK| Category funcionando
+OK| Product funcionando
+OK| Cart funcionando
+
+adicionar produto |OK
+buscar carrinho com relacionamento Product |OK
+remover item |OK
+
+Order funcionando
+
+criação do pedido |OK
+criação dos itens do pedido junto (OrderItem) |OK
+cálculo do valor total |OK

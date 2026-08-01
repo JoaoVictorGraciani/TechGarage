@@ -1,46 +1,39 @@
 const prisma = require("../../prisma");
 
-// Listar produtos
+// Listar categorias
 exports.getAll = async (req, res) => {
     try {
-        const products = await prisma.product.findMany({
-            include: {
-                category: true
-            }
-        });
+        const categories = await prisma.category.findMany();
 
-        res.json(products);
+        res.json(categories);
     } catch (error) {
         res.status(500).json(error);
     }
 };
 
-// Buscar produto
+// Buscar por ID
 exports.getById = async (req, res) => {
     try {
-        const product = await prisma.product.findUnique({
+        const category = await prisma.category.findUnique({
             where: {
                 id: Number(req.params.id)
-            },
-            include: {
-                category: true
             }
         });
 
-        res.json(product);
+        res.json(category);
     } catch (error) {
         res.status(500).json(error);
     }
 };
 
-// Criar
+// Criar categoria
 exports.create = async (req, res) => {
     try {
-        const product = await prisma.product.create({
+        const category = await prisma.category.create({
             data: req.body
         });
 
-        res.status(201).json(product);
+        res.status(201).json(category);
     } catch (error) {
         res.status(500).json(error);
     }
@@ -49,14 +42,14 @@ exports.create = async (req, res) => {
 // Atualizar
 exports.update = async (req, res) => {
     try {
-        const product = await prisma.product.update({
+        const category = await prisma.category.update({
             where: {
                 id: Number(req.params.id)
             },
             data: req.body
         });
 
-        res.json(product);
+        res.json(category);
     } catch (error) {
         res.status(500).json(error);
     }
@@ -65,14 +58,14 @@ exports.update = async (req, res) => {
 // Excluir
 exports.remove = async (req, res) => {
     try {
-        await prisma.product.delete({
+        await prisma.category.delete({
             where: {
                 id: Number(req.params.id)
             }
         });
 
         res.json({
-            message: "Produto removido."
+            message: "Categoria removida."
         });
     } catch (error) {
         res.status(500).json(error);

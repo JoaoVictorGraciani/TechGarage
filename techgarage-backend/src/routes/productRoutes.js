@@ -1,39 +1,21 @@
-const express = require('express');
-const prisma = require('../config/prisma');
-
+const express = require("express");
 const router = express.Router();
 
-// Listar todos os produtos (com categoria já incluída)
-router.get('/', async (req, res) => {
-  try {
-    const products = await prisma.product.findMany({
-      include: { category: true },
-      orderBy: { id: 'asc' },
-    });
-    res.json(products);
-  } catch (error) {
-    res.status(500).json({ error: "Erro ao buscar produtos." });
-  }
-});
+const productController = require("../controllers/productController");
 
-// Buscar um produto específico
-router.get('/:id', async (req, res) => {
-  const { id } = req.params;
+// Listar produtos
+router.get("/", productController.getAll);
 
-  try {
-    const product = await prisma.product.findUnique({
-      where: { id: parseInt(id) },
-      include: { category: true },
-    });
+// Buscar produto por ID
+router.get("/:id", productController.getById);
 
-    if (!product) {
-      return res.status(404).json({ error: "Produto não encontrado." });
-    }
+// Criar produto
+router.post("/", productController.create);
 
-    res.json(product);
-  } catch (error) {
-    res.status(500).json({ error: "Erro ao buscar produto." });
-  }
-});
+// Atualizar produto
+router.put("/:id", productController.update);
+
+// Excluir produto
+router.delete("/:id", productController.remove);
 
 module.exports = router;

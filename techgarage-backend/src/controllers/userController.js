@@ -1,78 +1,71 @@
 const prisma = require("../../prisma");
 
-// Listar produtos
+// Listar usuários
 exports.getAll = async (req, res) => {
     try {
-        const products = await prisma.product.findMany({
-            include: {
-                category: true
-            }
-        });
+        const users = await prisma.user.findMany();
 
-        res.json(products);
+        res.json(users);
     } catch (error) {
         res.status(500).json(error);
     }
 };
 
-// Buscar produto
+// Buscar usuário
 exports.getById = async (req, res) => {
     try {
-        const product = await prisma.product.findUnique({
+        const user = await prisma.user.findUnique({
             where: {
                 id: Number(req.params.id)
-            },
-            include: {
-                category: true
             }
         });
 
-        res.json(product);
+        res.json(user);
     } catch (error) {
         res.status(500).json(error);
     }
 };
 
-// Criar
+// Criar usuário
 exports.create = async (req, res) => {
     try {
-        const product = await prisma.product.create({
+        const user = await prisma.user.create({
             data: req.body
         });
 
-        res.status(201).json(product);
+        res.status(201).json(user);
     } catch (error) {
         res.status(500).json(error);
     }
 };
 
-// Atualizar
+// Atualizar usuário
 exports.update = async (req, res) => {
     try {
-        const product = await prisma.product.update({
+        const user = await prisma.user.update({
             where: {
                 id: Number(req.params.id)
             },
             data: req.body
         });
 
-        res.json(product);
+        res.json(user);
     } catch (error) {
         res.status(500).json(error);
     }
 };
 
-// Excluir
+// Excluir usuário
 exports.remove = async (req, res) => {
     try {
-        await prisma.product.delete({
+        await prisma.user.delete({
             where: {
                 id: Number(req.params.id)
             }
         });
 
         res.json({
-            message: "Produto removido."
+            message: "Usuário removido."
         });
     } catch (error) {
         res.status(500).json(error);
