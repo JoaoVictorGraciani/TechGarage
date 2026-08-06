@@ -29,26 +29,12 @@ exports.getCart = async (req, res) => {
 };
 
 // Adicionar produto ao carrinho
+// Adicionar produto ao carrinho
 exports.addItem = async (req, res) => {
-
     try {
 
         const { userId, productId, quantity } = req.body;
 
-        // Verifica usuário
-        const user = await prisma.user.findUnique({
-            where: {
-                id: Number(userId)
-            }
-        });
-
-        if (!user) {
-            return res.status(404).json({
-                message: "Usuário não encontrado."
-            });
-        }
-
-        // Verifica produto
         const product = await prisma.product.findUnique({
             where: {
                 id: Number(productId)
@@ -61,7 +47,12 @@ exports.addItem = async (req, res) => {
             });
         }
 
-        // Produto já existe no carrinho?
+        if (product.stock < quantity) {
+            return res.status(400).json({
+                message: "Estoque insuficiente."
+            });
+        }
+
         const existingItem = await prisma.cart.findFirst({
             where: {
                 userId: Number(userId),
@@ -69,9 +60,11 @@ exports.addItem = async (req, res) => {
             }
         });
 
+        let cartItem;
+
         if (existingItem) {
 
-            const updated = await prisma.cart.update({
+            cartItem = await prisma.cart.update({
                 where: {
                     id: existingItem.id
                 },
@@ -80,27 +73,40 @@ exports.addItem = async (req, res) => {
                 }
             });
 
-            return res.json(updated);
+        } else {
+
+            cartItem = await prisma.cart.create({
+                data: {
+                    userId: Number(userId),
+                    productId: Number(productId),
+                    quantity: Number(quantity)
+                }
+            });
+
         }
 
-        // Cria novo item
-        const item = await prisma.cart.create({
+        await prisma.product.update({
+            where: {
+                id: Number(productId)
+            },
             data: {
-                userId: Number(userId),
-                productId: Number(productId),
-                quantity: Number(quantity)
+                stock: {
+                    decrement: Number(quantity)
+                }
             }
         });
 
-        res.status(201).json(item);
+        return res.status(201).json(cartItem);
 
     } catch (error) {
-    console.log(error);
 
-    res.status(500).json({
-        error: error.message
-    });}
+        console.error(error);
 
+        return res.status(500).json({
+            error: error.message
+        });
+
+    }
 };
 
 // Atualizar quantidade
