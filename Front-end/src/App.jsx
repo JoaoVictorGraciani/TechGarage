@@ -6,6 +6,8 @@ import Carrinho from './pages/Carrinho';
 import Checkout from './pages/Checkout';
 import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
+import ProdutoDetalhe from './pages/ProdutoDetalhe';
+import MeusPedidos from './pages/MeusPedidos';
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cadastro" element={<Cadastro />} />
+        <Route path="/produto/:id" element={<ProdutoDetalhe />} />
+        <Route path="/meus-pedidos" element={<MeusPedidos />} />
       </Routes>
     </>
   );

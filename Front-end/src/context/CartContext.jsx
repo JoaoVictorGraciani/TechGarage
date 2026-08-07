@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { useToast } from './ToastContext';
 
 const CartContext = createContext();
 const CHAVE_STORAGE = 'techgarage:carrinho';
@@ -14,6 +15,7 @@ function carregarCarrinhoInicial() {
 
 export function CartProvider({ children }) {
   const [carrinho, setCarrinho] = useState(carregarCarrinhoInicial);
+  const { addToast } = useToast();
 
   useEffect(() => {
     localStorage.setItem(CHAVE_STORAGE, JSON.stringify(carrinho));
@@ -29,6 +31,7 @@ export function CartProvider({ children }) {
       }
       return [...prev, { ...produto, quantidade: 1 }];
     });
+    addToast(`${produto.name} adicionado ao carrinho`);
   };
 
   const removerItem = (produtoId) => {

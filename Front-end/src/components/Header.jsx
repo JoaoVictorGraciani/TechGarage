@@ -80,15 +80,23 @@ function Header() {
         <div className="flex-1" />
 
         {/* Cart + Entrar + Hamburguer */}
-        <div className="flex items-center gap-3 shrink-0">
+<div className="flex items-center gap-3 shrink-0">
           {usuario ? (
-            <button
-              onClick={logout}
-              className="hidden sm:flex items-center gap-1.5 text-sm text-[var(--color-text-primary)] border border-[var(--color-border-hover)] px-3 py-1.5 rounded-[var(--radius-full)] transition-all duration-200 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] active:scale-95"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]" />
-              {usuario.nome.split(' ')[0]}
-            </button>
+            <div className="hidden sm:flex items-center gap-2">
+              <Link
+                to="/meus-pedidos"
+                className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors"
+              >
+                Meus Pedidos
+              </Link>
+              <button
+                onClick={logout}
+                className="flex items-center gap-1.5 text-sm text-[var(--color-text-primary)] border border-[var(--color-border-hover)] px-3 py-1.5 rounded-[var(--radius-full)] transition-all duration-200 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] active:scale-95"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]" />
+                {usuario.name.split(' ')[0]}
+              </button>
+            </div>
           ) : (
             <Link
               to="/login"

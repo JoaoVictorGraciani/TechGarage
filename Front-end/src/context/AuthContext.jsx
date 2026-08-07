@@ -27,31 +27,30 @@ export function AuthProvider({ children }) {
   }, [usuario]);
 
   const login = async (email, senha) => {
-    const { data } = await api.get('/usuarios', { params: { email } });
-    const encontrado = data.find((u) => u.email === email && u.senha === senha);
-    if (!encontrado) {
-      throw new Error('E-mail ou senha inválidos.');
+    try {
+      const { data } = await api.post('/auth/login', { email, password: senha });
+      setUsuario(data);
+      return data;
+    } catch (err) {
+      const mensagem = err.response?.data?.error || 'Erro ao fazer login.';
+      throw new Error(mensagem);
     }
-    const { senha: _, ...usuarioSemSenha } = encontrado;
-    setUsuario(usuarioSemSenha);
-    return usuarioSemSenha;
   };
 
   const cadastrar = async ({ nome, email, senha, telefone }) => {
-    const { data: existentes } = await api.get('/usuarios', { params: { email } });
-    if (existentes.length > 0) {
-      throw new Error('Já existe uma conta com esse e-mail.');
+    try {
+      const { data } = await api.post('/auth/register', {
+        name: nome,
+        email,
+        password: senha,
+        phone: telefone,
+      });
+      setUsuario(data);
+      return data;
+    } catch (err) {
+      const mensagem = err.response?.data?.error || 'Erro ao criar conta.';
+      throw new Error(mensagem);
     }
-    const { data: novoUsuario } = await api.post('/usuarios', {
-      nome,
-      email,
-      senha,
-      telefone,
-      perfil: 'cliente',
-    });
-    const { senha: _, ...usuarioSemSenha } = novoUsuario;
-    setUsuario(usuarioSemSenha);
-    return usuarioSemSenha;
   };
 
   const logout = () => {

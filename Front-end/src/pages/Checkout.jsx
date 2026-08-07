@@ -2,24 +2,37 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-
-function gerarCodigoPix() {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let codigo = '00020126580014BR.GOV.BCB.PIX';
-  for (let i = 0; i < 40; i++) {
-    codigo += chars[Math.floor(Math.random() * chars.length)];
-  }
-  return codigo;
-}
+import { useAuth } from '../context/AuthContext';
+import api from '../services/api';
 
 function Checkout() {
   const { carrinho, totalPreco, setCarrinho } = useCart();
+  const { usuario } = useAuth();
   const navigate = useNavigate();
 
-  const [pixGerado, setPixGerado] = useState(false);
-  const [codigoPix] = useState(gerarCodigoPix());
+  const [pedido, setPedido] = useState(null); // { id, payments: [{ pixCode }] }
+  const [gerandoPix, setGerandoPix] = useState(false);
+  const [confirmando, setConfirmando] = useState(false);
   const [copiado, setCopiado] = useState(false);
   const [pagamentoConfirmado, setPagamentoConfirmado] = useState(false);
+  const [erro, setErro] = useState('');
+
+  // Precisa estar logado para finalizar a compra
+  if (!usuario && !pagamentoConfirmado) {
+    return (
+      <div className="max-w-md mx-auto p-6 text-center py-20">
+        <p className="text-[var(--color-text-secondary)] mb-4">
+          Você precisa estar logado para finalizar a compra.
+        </p>
+        <Link
+          to="/login"
+          className="inline-block bg-[var(--color-accent)] text-[var(--color-accent-contrast)] font-semibold px-5 py-2 rounded-[var(--radius-sm)] transition-all duration-200 hover:bg-[var(--color-accent-hover)] active:scale-95"
+        >
+          Fazer login
+        </Link>
+      </div>
+    );
+  }
 
   if (carrinho.length === 0 && !pagamentoConfirmado) {
     return (
@@ -35,15 +48,51 @@ function Checkout() {
     );
   }
 
+  const gerarPix = async () => {
+    try {
+      setGerandoPix(true);
+      setErro('');
+
+      const { data } = await api.post('/orders', {
+        userId: usuario.id,
+        items: carrinho.map((item) => ({
+          productId: item.id,
+          quantity: item.quantidade,
+        })),
+      });
+
+      setPedido(data);
+    } catch (err) {
+      const mensagem = err.response?.data?.error || 'Não foi possível gerar o PIX. Tente novamente.';
+      setErro(mensagem);
+    } finally {
+      setGerandoPix(false);
+    }
+  };
+
+  const codigoPix = pedido?.payments?.[0]?.pixCode || '';
+
   const copiarCodigo = () => {
     navigator.clipboard.writeText(codigoPix);
     setCopiado(true);
     setTimeout(() => setCopiado(false), 2000);
   };
 
-  const confirmarPagamento = () => {
-    setPagamentoConfirmado(true);
-    setCarrinho([]);
+  const confirmarPagamento = async () => {
+    try {
+      setConfirmando(true);
+      setErro('');
+
+      await api.put(`/orders/${pedido.id}/confirmar-pagamento`);
+
+      setPagamentoConfirmado(true);
+      setCarrinho([]);
+    } catch (err) {
+      const mensagem = err.response?.data?.error || 'Não foi possível confirmar o pagamento.';
+      setErro(mensagem);
+    } finally {
+      setConfirmando(false);
+    }
   };
 
   if (pagamentoConfirmado) {
@@ -91,12 +140,17 @@ function Checkout() {
         </div>
       </div>
 
-      {!pixGerado ? (
+      {erro && (
+        <p className="text-[var(--color-danger)] text-sm mb-4 animate-[fadeInUp_0.2s_ease]">{erro}</p>
+      )}
+
+      {!pedido ? (
         <button
-          onClick={() => setPixGerado(true)}
-          className="w-full bg-[var(--color-accent)] text-[var(--color-accent-contrast)] font-semibold py-3 rounded-[var(--radius-sm)] transition-all duration-200 hover:bg-[var(--color-accent-hover)] active:scale-95"
+          onClick={gerarPix}
+          disabled={gerandoPix}
+          className="w-full bg-[var(--color-accent)] text-[var(--color-accent-contrast)] font-semibold py-3 rounded-[var(--radius-sm)] transition-all duration-200 hover:bg-[var(--color-accent-hover)] active:scale-95 disabled:opacity-50"
         >
-          Pagar com PIX
+          {gerandoPix ? 'Gerando...' : 'Pagar com PIX'}
         </button>
       ) : (
         <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[var(--radius-md)] p-4 flex flex-col items-center gap-4 animate-[fadeInUp_0.4s_ease]">
@@ -131,9 +185,10 @@ function Checkout() {
 
           <button
             onClick={confirmarPagamento}
-            className="w-full bg-[var(--color-accent)] text-[var(--color-accent-contrast)] font-semibold py-3 rounded-[var(--radius-sm)] transition-all duration-200 hover:bg-[var(--color-accent-hover)] active:scale-95 mt-2"
+            disabled={confirmando}
+            className="w-full bg-[var(--color-accent)] text-[var(--color-accent-contrast)] font-semibold py-3 rounded-[var(--radius-sm)] transition-all duration-200 hover:bg-[var(--color-accent-hover)] active:scale-95 mt-2 disabled:opacity-50"
           >
-            Simular pagamento aprovado
+            {confirmando ? 'Confirmando...' : 'Simular pagamento aprovado'}
           </button>
         </div>
       )}

@@ -34,11 +34,9 @@ function Home() {
 
   return (
     <main className="max-w-7xl mx-auto">
-      {nomeCategoriaAtiva && (
-        <h2 className="text-lg font-semibold text-[var(--color-text-primary)] px-4 pt-4">
+      <h2 className="text-lg font-semibold text-zinc-900 px-4 pt-4">
           {nomeCategoriaAtiva}
         </h2>
-      )}
 
       {produtosFiltrados.length === 0 ? (
         <p className="text-center text-[var(--color-text-secondary)] py-16">
