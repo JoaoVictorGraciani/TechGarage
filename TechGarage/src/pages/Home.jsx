@@ -7,51 +7,63 @@ import { slugify } from '../utils/slugify';
 function Home() {
   const { produtos, categorias, loading, erro } = useProdutos();
   const [searchParams] = useSearchParams();
+
   const termoBusca = searchParams.get('busca')?.toLowerCase() || '';
   const categoriaSlug = searchParams.get('categoria') || '';
-  console.log('slug da URL:', categoriaSlug);
-  console.log('categorias da API:', categorias.map(c => ({ nome: c.nome, slugGerado: slugify(c.nome) })));
 
   if (loading) return <Loading />;
-  if (erro) return <p className="text-center text-red-400 py-12">{erro}</p>;
+
+  if (erro) {
+    return (
+      <p className="text-center text-red-500 py-16">
+        {erro}
+      </p>
+    );
+  }
 
   let produtosFiltrados = produtos;
 
-  // Filtro por categoria
   let nomeCategoriaAtiva = '';
+
   if (categoriaSlug) {
-    const categoriaEncontrada = categorias.find((c) => slugify(c.nome) === categoriaSlug);
+    const categoriaEncontrada = categorias.find(
+      (c) => slugify(c.name) === categoriaSlug
+    );
+
     if (categoriaEncontrada) {
-      nomeCategoriaAtiva = categoriaEncontrada.nome;
+      nomeCategoriaAtiva = categoriaEncontrada.name;
+
       produtosFiltrados = produtosFiltrados.filter(
-        (p) => String(p.categoria_id) === String(categoriaEncontrada.id)
+        (p) => String(p.categoryId) === String(categoriaEncontrada.id)
       );
     }
   }
 
-  // Filtro por busca (aplicado em cima do filtro de categoria)
   if (termoBusca) {
     produtosFiltrados = produtosFiltrados.filter((p) =>
-      p.nome.toLowerCase().includes(termoBusca)
+      p.name.toLowerCase().includes(termoBusca)
     );
   }
 
   return (
-    <main className="max-w-7xl mx-auto">
+    <main>
       {nomeCategoriaAtiva && (
-        <h2 className="text-lg font-semibold text-white px-4 pt-4">
+        <h1 className="text-2xl font-bold mb-6">
           {nomeCategoriaAtiva}
-        </h2>
+        </h1>
       )}
 
       {produtosFiltrados.length === 0 ? (
         <p className="text-center text-zinc-400 py-16">
           {termoBusca
-            ? `Nenhum produto encontrado para "${termoBusca}".`
+            ? `Ops, não encontramos este item`
             : 'Nenhum produto encontrado nesta categoria.'}
         </p>
       ) : (
-        <ProductGrid produtos={produtosFiltrados} categorias={categorias} />
+        <ProductGrid
+          produtos={produtosFiltrados}
+          categorias={categorias}
+        />
       )}
     </main>
   );

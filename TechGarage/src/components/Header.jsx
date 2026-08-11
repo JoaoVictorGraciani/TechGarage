@@ -1,4 +1,5 @@
 // src/components/Header.jsx
+
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import SearchBar from './SearchBar';
@@ -19,49 +20,79 @@ const categorias = [
 function Header() {
   const [menuAberto, setMenuAberto] = useState(false);
   const [categoriasAberto, setCategoriasAberto] = useState(false);
+
   const { usuario, logout } = useAuth();
+
   const dropdownRef = useRef(null);
 
-  // Fecha o dropdown ao clicar fora dele
   useEffect(() => {
     function handleClickFora(e) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target)
+      ) {
         setCategoriasAberto(false);
       }
     }
+
     document.addEventListener('mousedown', handleClickFora);
-    return () => document.removeEventListener('mousedown', handleClickFora);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickFora);
+    };
   }, []);
 
+  const primeiroNome = usuario?.name
+    ? usuario.name.split(' ')[0]
+    : 'Usuário';
+
   return (
-    <header className="sticky top-0 z-50 w-full bg-[var(--color-bg)]/90 backdrop-blur-md border-b border-[var(--color-border)] relative">
+    <header className="relative">
+
       {/* Linha principal */}
-      <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 md:h-20 flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex items-center gap-4">
+
         {/* Logo + Slogan */}
-        <Link to="/" className="flex flex-col shrink-0 leading-none group">
-          <span className="text-xl md:text-2xl font-bold tracking-tight text-[var(--color-text-primary)]">
-            Tech<span className="text-[var(--color-accent)]">Garage</span>
-          </span>
-          <span className="hidden sm:block text-[10px] md:text-xs text-[var(--color-text-muted)] tracking-wide mt-0.5 transition-colors duration-200 group-hover:text-[var(--color-accent)]">
-            Tecnologia de ponta para quem exige performance.
-          </span>
+        <Link to="/" className="shrink-0">
+          <div>
+            <h1 className="text-xl font-bold text-[var(--color-accent)]">
+              TechGarage
+            </h1>
+
+            <p className="hidden lg:block text-xs text-[var(--color-text-muted)]">
+              Tecnologia de ponta para quem exige performance.
+            </p>
+          </div>
         </Link>
 
-        {/* Dropdown de categorias (desktop) */}
-        <div className="hidden md:block relative" ref={dropdownRef}>
+        {/* Dropdown de categorias desktop */}
+        <div
+          className="hidden md:block relative"
+          ref={dropdownRef}
+        >
           <button
-            onClick={() => setCategoriasAberto(!categoriasAberto)}
+            onClick={() =>
+              setCategoriasAberto(!categoriasAberto)
+            }
             className="flex items-center gap-1.5 text-sm text-[var(--color-text-secondary)] border border-[var(--color-border)] px-3 py-2 rounded-[var(--radius-sm)] transition-all duration-200 hover:border-[var(--color-border-hover)] hover:text-[var(--color-text-primary)]"
           >
             Categorias
-            <span className={`text-xs transition-transform duration-200 ${categoriasAberto ? 'rotate-180' : ''}`}>
+
+            <span
+              className={`text-xs transition-transform duration-200 ${
+                categoriasAberto ? 'rotate-180' : ''
+              }`}
+            >
               ▾
             </span>
           </button>
 
           <div
-            className={`absolute top-full left-0 mt-2 w-56 z-50 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[var(--radius-md)] shadow-lg shadow-black/30 py-2 origin-top transition-all duration-200 ${categoriasAberto ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
-              }`}
+            className={`absolute top-full left-0 mt-2 w-56 z-50 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[var(--radius-md)] shadow-lg shadow-black/30 py-2 origin-top transition-all duration-200 ${
+              categoriasAberto
+                ? 'opacity-100 scale-100'
+                : 'opacity-0 scale-95 pointer-events-none'
+            }`}
           >
             {categorias.map((cat) => (
               <Link
@@ -76,20 +107,25 @@ function Header() {
           </div>
         </div>
 
-        {/* Espaçador flexível empurra o resto pra direita */}
+        {/* Espaçador */}
         <div className="flex-1" />
 
-        {/* Cart + Entrar + Hamburguer */}
+        {/* Usuário + Carrinho + Menu */}
         <div className="flex items-center gap-3 shrink-0">
+
           {usuario ? (
             <button
               onClick={logout}
               className="hidden sm:flex items-center gap-1.5 text-sm text-[var(--color-text-primary)] border border-[var(--color-border-hover)] px-3 py-1.5 rounded-[var(--radius-full)] transition-all duration-200 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] active:scale-95"
+              title="Clique para sair"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]" />
-              {usuario.nome.split(' ')[0]}
+
+              {primeiroNome}
             </button>
+
           ) : (
+
             <Link
               to="/login"
               className="hidden sm:block text-sm font-medium text-[var(--color-accent-contrast)] bg-[var(--color-accent)] px-4 py-1.5 rounded-[var(--radius-full)] transition-all duration-200 hover:bg-[var(--color-accent-hover)] active:scale-95"
@@ -98,6 +134,7 @@ function Header() {
             </Link>
           )}
 
+          {/* Carrinho */}
           <Link
             to="/carrinho"
             className="relative text-[var(--color-text-primary)] transition-transform duration-200 hover:text-[var(--color-accent)] hover:scale-110 active:scale-95"
@@ -106,7 +143,7 @@ function Header() {
             <CartBadge />
           </Link>
 
-          {/* Hambúrguer só em telas bem pequenas (onde nem o dropdown de categorias aparece) */}
+          {/* Hambúrguer mobile */}
           <button
             onClick={() => setMenuAberto(!menuAberto)}
             className="md:hidden text-[var(--color-text-primary)] transition-colors duration-200 hover:text-[var(--color-accent)]"
@@ -114,20 +151,35 @@ function Header() {
           >
             {menuAberto ? '✕' : '☰'}
           </button>
+
         </div>
       </div>
 
-      {/* Linha da busca */}
+      {/* Linha de busca */}
       <div className="max-w-7xl mx-auto px-4 md:px-6 pb-3">
         <SearchBar />
       </div>
 
-      {/* Menu mobile (categorias + login, telas pequenas) */}
+      {/* Menu mobile */}
       <div
-        className={`md:hidden absolute top-full left-0 w-full bg-[var(--color-bg)]/95 backdrop-blur-md border-b border-[var(--color-border)] flex flex-col p-4 gap-3 origin-top transition-all duration-200 ${menuAberto ? 'opacity-100 scale-y-100' : 'opacity-0 scale-y-95 pointer-events-none'
-          }`}
+        className={`md:hidden absolute top-full left-0 w-full bg-[var(--color-bg)]/95 backdrop-blur-md border-b border-[var(--color-border)] flex flex-col p-4 gap-3 origin-top transition-all duration-200 ${
+          menuAberto
+            ? 'opacity-100 scale-y-100'
+            : 'opacity-0 scale-y-95 pointer-events-none'
+        }`}
       >
-        {!usuario && (
+
+        {usuario ? (
+          <button
+            onClick={() => {
+              logout();
+              setMenuAberto(false);
+            }}
+            className="text-left text-sm font-medium text-[var(--color-accent)]"
+          >
+            Sair ({primeiroNome})
+          </button>
+        ) : (
           <Link
             to="/login"
             onClick={() => setMenuAberto(false)}
@@ -136,6 +188,7 @@ function Header() {
             Entrar / Cadastrar
           </Link>
         )}
+
         {categorias.map((cat) => (
           <Link
             key={cat.slug}
@@ -146,7 +199,9 @@ function Header() {
             {cat.nome}
           </Link>
         ))}
+
       </div>
+
     </header>
   );
 }

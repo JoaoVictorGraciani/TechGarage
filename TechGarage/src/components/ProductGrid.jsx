@@ -13,12 +13,15 @@ function ProductGrid({ produtos, categorias }) {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 p-4 md:p-6 max-w-7xl mx-auto">
       {produtos.map((produto, index) => {
-        const categoria = categorias.find((c) => String(c.id) === String(produto.categoria_id));
+        const categoria = categorias.find(
+          (c) => String(c.id) === String(produto.categoryId)
+        );
+
         return (
           <Reveal key={produto.id} delay={(index % 8) * 50}>
             <ProductCard
               produto={produto}
-              nomeCategoria={categoria?.nome || 'Outros'}
+              nomeCategoria={categoria?.name || 'Outros'}
             />
           </Reveal>
         );
