@@ -1,0 +1,16 @@
+{
+  "name": "techgarage-fullstack",
+  "version": "4.2.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -n API,WEB \"npm --prefix techgarage-backend run dev\" \"npm --prefix TechGarage run dev\"",
+    "dev:backend": "npm --prefix techgarage-backend run dev",
+    "dev:frontend": "npm --prefix TechGarage run dev",
+    "build": "npm --prefix TechGarage run build",
+    "install:all": "npm install && npm --prefix techgarage-backend install && npm --prefix TechGarage install",
+    "prepare:database": "npm --prefix techgarage-backend run prisma:generate && npm --prefix techgarage-backend run db:push && npm --prefix techgarage-backend run seed"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

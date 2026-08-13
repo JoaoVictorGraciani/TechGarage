@@ -1,0 +1,38 @@
+{
+  "name": "techgarage-backend",
+  "version": "4.2.0",
+  "private": true,
+  "description": "API REST do TechGarage Store",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "prisma:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio",
+    "seed": "node prisma/seed.js",
+    "check": "node --check src/server.js && node --check src/controllers/authController.js && node --check src/controllers/cartController.js && node --check src/controllers/checkoutController.js && node --check src/controllers/productController.js && node --check src/controllers/orderController.js && node --check src/controllers/adminController.js && node --check src/controllers/serperController.js && node --check src/routes/serperRoutes.js"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
+  "engines": {
+    "node": ">=20.19"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.3",
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.1.0",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "techgarage-fullstack": "file:.."
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "prisma": "^6.19.3"
+  }
+}
