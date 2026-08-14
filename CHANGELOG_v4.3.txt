@@ -1,0 +1,13 @@
+TechGarage v4.3
+- prepare:database não executa mais seed
+- novo setup:database para primeira instalação
+- seed não altera catálogo se já houver produtos
+- senha do admin não é redefinida sem ADMIN_RESET_PASSWORD=true
+- novo diagnose:database
+- backend informa o banco conectado no startup
+- alerta de placeholders no startup
+- Admin confirma persistência da imagem após salvar
+- API valida URL de imagem http/https
+- Admin mostra contagem/status de imagens padrão
+- QA_REPORT_v4.3.md incluído
+- checkout agora usa chave idempotente única para evitar duplicação em retries
